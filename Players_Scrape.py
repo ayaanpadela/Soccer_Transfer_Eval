@@ -1,36 +1,33 @@
 import soccerdata as sd
-import time
-import random
+import pandas as pd
 import warnings
+import config
+import os
 warnings.filterwarnings('ignore')
-leagues = ['ENG-Premier League', 'ESP-La Liga', 'FRA-Ligue 1', 'GER-Bundesliga', 'ITA-Serie A']
-seasons = ["1718", "1819", "1920", "2021", "2122", "2223", "2324"]
-stat_types = ["standard", "shooting", "passing"]
-
-print("--- STARTING FBREF SCRAPE (Estimated Time: 10 mins) ---")
-
-for season in seasons:
-    print(f"\n[Processing Season: {season}]")
-
-    try:
-        fbref = sd.FBref(leagues=leagues, seasons=[season])
-
+def scrape_season_stats(season):
+    print("Scraping Season Stats for " + season)
+    try :
+        fbref = sd.FBref(leagues=config.LEAGUES, seasons=season)
+        season_data= {}
+        stat_types= ["standard","shooting","passing"]
         for stat in stat_types:
-            print(f"  > Fetching {stat} stats...")
-            df = fbref.read_player_season_stats(stat_type=stat)
+            print(f"Scraping Stats for {stat}")
+            df= fbref.read_player_season_stats(stat_type=stat)
+            season_data[stat] = df
+        return season_data
 
-            filename = f"data/fbref_{stat}_{season}.csv"
-            df.to_csv(filename)
-            print(f"    Saved {filename}")
+    except :
+        print(f"Error scraping Season Stats for {season}")
+        return None
 
-            # Short pause between stat types
-            time.sleep(random.uniform(5, 10))
-
-    except Exception as e:
-        print(f"ERROR on {season}: {e}")
-
-    # LONG PAUSE between seasons to reset IP "heat"
-    print("Pausing in between to prevent IP ban")
-    time.sleep(30)
-
-print("\n Player SCRAPE COMPLETE")
+def main():
+    print("Starting Player stats scraping")
+    for season in config.SEASONS:
+        season_data = scrape_season_stats(season)
+        if season_data :
+            for stat_type,df in season_data.items():
+                filename= f"{config.DATA_DIR}player_stats/{stat_type}_{season}.csv"
+                df.to_csv(filename)
+                print(f"{stat_type} stats saved")
+if __name__ == "__main__":
+    main()
