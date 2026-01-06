@@ -26,7 +26,7 @@ def scrape_transfers():
         for season_str in config.SEASONS:
             season_str = get_start_year(season_str)
 
-            filename = f"{output_dir}transfers_{league}_{season_str}.csv"
+            filename = f"{output_dir}transfers_{league}_{season_str.replace('/', '_')}.csv"
 
             # 1. Check if exists
             if os.path.exists(filename):
@@ -37,7 +37,7 @@ def scrape_transfers():
 
             try:
                 # Scrape
-                df=transfer_markt.scrape_players(season_str, league)
+                df=transfer_markt.scrape_players(season_str,league)
                 # Add Metadata (Crucial for joining later!)
                 df['Season_Str'] = season_str
                 df['League_Standard'] = league
@@ -56,6 +56,5 @@ def scrape_transfers():
 def main():
     print("--- STARTING Transfer PIPELINE ---")
     scrape_transfers()
-
 if __name__ == "__main__":
     main()
