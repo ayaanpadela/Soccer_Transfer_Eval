@@ -7,3 +7,5 @@ SEASONS = ["1718", "1819", "1920", "2021", "2122", "2223", "2324"]
 
 # Where we save data
 DATA_DIR = "data/"
+
+CAPOLOGY_LEAGUES= ["EPL","La Liga","Ligue 1","Bundesliga","Serie A"]
