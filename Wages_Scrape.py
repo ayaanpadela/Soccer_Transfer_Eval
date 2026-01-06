@@ -22,7 +22,7 @@ def scrape_wages():
         os.makedirs(output_dir)
 
     # Loop through our mapped leagues
-    for league in config.CAPOLOGY_LEAGUES:
+    for league in config.ScraperFC_Leagues:
         for season_str in config.SEASONS:
             season_str = get_start_year(season_str)
             # Construct filename: data/wages/wages_Premier League_2017.csv
