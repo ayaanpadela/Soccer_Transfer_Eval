@@ -1,1 +1,7 @@
-*.csv
+.venv
+.vscode
+.idea
+data
+extra
+.gitignore
+__pycache__

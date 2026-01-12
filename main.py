@@ -1,18 +1,32 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import Players_Scrape
+import Transfers_Scrape
+import Wages_Scrape
+import os
 import config
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    stat_type= "Shooting"
-    season="2021"
-    print(f"{config.DATA_DIR}player_stats_{stat_type}_{season}.csv")  # Press Ctrl+F8 to toggle the breakpoint.
+
+def main():
+    print("=== Soccer Transfer Evaluation Data Pipeline ===")
+
+    # Ensure data directory exists
+    if not os.path.exists(config.DATA_DIR):
+        os.makedirs(config.DATA_DIR)
+        print(f"Created directory: {config.DATA_DIR}")
+
+    # 1. Scrape Player Stats
+    print("\n--- Step 1: Scraping Player Stats ---")
+    Players_Scrape.main()
+
+    # 2. Scrape Transfers
+    print("\n--- Step 2: Scraping Transfers ---")
+    Transfers_Scrape.main()
+
+    # 3. Scrape Wages
+    print("\n--- Step 3: Scraping Wages ---")
+    Wages_Scrape.main()
+
+    print("\n=== Data Pipeline Completed Successfully ===")
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    main()
